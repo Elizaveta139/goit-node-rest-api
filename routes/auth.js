@@ -28,7 +28,7 @@ authRouter.post('/logout', authenticate, cntrlWrapper(logout));
 authRouter.patch(
   '/',
   authenticate,
-  validateBody(subscriptionSchema, message),
+  validateBody(subscriptionSchema),
   cntrlWrapper(updateSubscription)
 );
 
