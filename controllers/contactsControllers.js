@@ -2,7 +2,19 @@ import HttpError from '../helpers/HttpError.js';
 import { Contact } from '../models/contactsModel.js';
 
 export const getAllContacts = async (req, res) => {
-  const result = await Contact.find();
+  const { _id: owner } = req.user;
+  const { page = 1, limit = 20, favorite = null } = req.query;
+  const skip = (page - 1) * limit;
+  const filters = { owner };
+
+  if (favorite !== null) {
+    filters.favorite = favorite;
+  }
+
+  const result = await Contact.find(filters, '-createdAt -updatedAt', { skip, limit }).populate(
+    'owner',
+    'email subscription'
+  );
   res.status(200).json(result);
 };
 
@@ -26,7 +38,7 @@ export const deleteContact = async (req, res) => {
 
 export const createContact = async (req, res) => {
   const { _id: owner } = req.user;
-  const result = await Contact.create({ ...req.body.owner });
+  const result = await Contact.create({ ...req.body, owner });
   res.status(201).json(result);
 };
 

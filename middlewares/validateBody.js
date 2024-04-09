@@ -1,12 +1,11 @@
 import HttpError from '../helpers/HttpError.js';
 
-const validateBody = (schema, errorMessage = 'Bad Request') => {
+export const validateBody = schema => {
   const func = (req, _, next) => {
     const { error } = schema.validate(req.body);
-    const errorMessg = errorMessage || error.message;
 
     if (error) {
-      next(HttpError(400, errorMessg));
+      next(HttpError(400, error.message));
     }
     next();
   };
@@ -14,4 +13,15 @@ const validateBody = (schema, errorMessage = 'Bad Request') => {
   return func;
 };
 
-export default validateBody;
+export const validateBodyUser = (schema, errorMessage) => {
+  const func = (req, _, next) => {
+    const { error } = schema.validate(req.body);
+
+    if (error) {
+      next(HttpError(400, errorMessage));
+    }
+    next();
+  };
+
+  return func;
+};

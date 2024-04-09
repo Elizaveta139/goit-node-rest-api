@@ -1,26 +1,25 @@
-import { model, Schema } from "mongoose";
-import { handleMongooseError } from "../helpers/handleMongooseError.js";
+import { model, Schema } from 'mongoose';
 
-const enumValue = ["starter", "pro", "business"];
-const emailRegexp = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+import { handleMongooseError } from '../helpers/handleMongooseError.js';
+import { enumValue, emailRegexp } from '../helpers/schemeSettings.js';
 
 const userSchema = new Schema(
   {
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [true, 'Password is required'],
       minlength: 6,
     },
     email: {
       type: String,
-      required: [true, "Email is required"],
+      required: [true, 'Email is required'],
       math: emailRegexp,
       unique: true,
     },
     subscription: {
       type: String,
       enum: enumValue,
-      default: "starter",
+      default: 'starter',
     },
     token: {
       type: String,
@@ -30,6 +29,6 @@ const userSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-userSchema.post("save", handleMongooseError);
+userSchema.post('save', handleMongooseError);
 
-export const User = model("user", userSchema);
+export const User = model('user', userSchema);

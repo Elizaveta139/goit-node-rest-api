@@ -8,7 +8,7 @@ import {
   updateStatusContact,
 } from '../controllers/contactsControllers.js';
 
-import validateBody from '../middlewares/validateBody.js';
+import { validateBody } from '../middlewares/validateBody.js';
 import { isValidId } from '../middlewares/isValidId.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import { cntrlWrapper } from '../helpers/cntrlWrapper.js';
