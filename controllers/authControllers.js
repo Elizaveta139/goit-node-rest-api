@@ -69,7 +69,6 @@ export const logout = async (req, res) => {
 };
 
 export const updateSubscription = async (req, res) => {
-  // const { subscription } = req.body;
   const { _id } = req.user;
   const result = await User.findByIdAndUpdate(_id, req.body, { new: true });
   if (!result) {
