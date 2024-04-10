@@ -49,8 +49,9 @@ export const updateContact = async (req, res) => {
     throw HttpError(400, 'Body must have at least one field');
   }
 
+  const { _id: owner } = req.user;
   const { id } = req.params;
-  const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
+  const result = await Contact.findByIdAndUpdate(id, { ...req.body, owner }, { new: true });
   if (!result) {
     throw HttpError(404, 'Not found');
   }
@@ -58,8 +59,9 @@ export const updateContact = async (req, res) => {
 };
 
 export const updateStatusContact = async (req, res) => {
+  const { _id: owner } = req.user;
   const { id } = req.params;
-  const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
+  const result = await Contact.findByIdAndUpdate(id, { ...req.body, owner }, { new: true });
   if (!result) {
     throw HttpError(404, 'Not found');
   }

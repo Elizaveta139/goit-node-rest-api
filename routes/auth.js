@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { validateBodyUser, validateBody } from '../middlewares/validateBody.js';
+import { validateBody } from '../middlewares/validateBody.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import { cntrlWrapper } from '../helpers/cntrlWrapper.js';
 
@@ -15,11 +15,9 @@ import {
 
 const authRouter = express.Router();
 
-const message = 'Помилка від Joi або іншої бібліотеки валідації';
+authRouter.post('/register', validateBody(registerSchema), cntrlWrapper(register));
 
-authRouter.post('/register', validateBodyUser(registerSchema, message), cntrlWrapper(register));
-
-authRouter.post('/login', validateBodyUser(loginSchema, message), cntrlWrapper(login));
+authRouter.post('/login', validateBody(loginSchema), cntrlWrapper(login));
 
 authRouter.get('/current', authenticate, cntrlWrapper(getCurrent));
 
