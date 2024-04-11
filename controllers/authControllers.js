@@ -13,7 +13,6 @@ export const register = async (req, res) => {
   }
 
   const hashPassword = await bcrypt.hash(password, 10);
-
   const newUser = await User.create({ ...req.body, password: hashPassword });
   res.status(201).json({
     user: {
@@ -52,7 +51,6 @@ export const login = async (req, res) => {
 
 export const getCurrent = async (req, res) => {
   const { email, subscription } = req.user;
-
   res.status(200).json({
     email,
     subscription,
@@ -62,16 +60,18 @@ export const getCurrent = async (req, res) => {
 export const logout = async (req, res) => {
   const { _id } = req.user;
   await User.findByIdAndUpdate(_id, { token: '' });
-
   res.status(204).json();
 };
 
 export const updateSubscription = async (req, res) => {
   const { _id } = req.user;
-  const result = await User.findByIdAndUpdate(_id, req.body, { new: true });
+
+  const result = await User.findByIdAndUpdate(_id, req.body, {
+    new: true,
+    select: 'email subscription',
+  });
   if (!result) {
     throw HttpError(404, 'Not found');
   }
-
   res.status(200).json(result);
 };
