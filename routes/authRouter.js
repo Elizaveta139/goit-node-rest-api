@@ -2,6 +2,7 @@ import express from 'express';
 
 import { validateBody } from '../middlewares/validateBody.js';
 import { authenticate } from '../middlewares/authenticate.js';
+import { upload } from '../middlewares/upload.js';
 import { cntrlWrapper } from '../helpers/cntrlWrapper.js';
 
 import { registerSchema, loginSchema, subscriptionSchema } from '../schemas/userSchemas.js';
@@ -11,6 +12,7 @@ import {
   getCurrent,
   logout,
   updateSubscription,
+  updateAvatar,
 } from '../controllers/authControllers.js';
 
 const authRouter = express.Router();
@@ -29,5 +31,7 @@ authRouter.patch(
   validateBody(subscriptionSchema),
   cntrlWrapper(updateSubscription)
 );
+
+authRouter.patch('/avatars', authenticate, upload.single('avatar'), cntrlWrapper(updateAvatar));
 
 export default authRouter;
