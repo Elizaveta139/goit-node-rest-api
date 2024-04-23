@@ -9,6 +9,7 @@ import { registerSchema, loginSchema, subscriptionSchema } from '../schemas/user
 import {
   register,
   login,
+  verifyEmail,
   getCurrent,
   logout,
   updateSubscription,
@@ -20,6 +21,8 @@ const authRouter = express.Router();
 authRouter.post('/register', validateBody(registerSchema), cntrlWrapper(register));
 
 authRouter.post('/login', validateBody(loginSchema), cntrlWrapper(login));
+
+authRouter.get('/verify/:verificationToken', cntrlWrapper(verifyEmail));
 
 authRouter.get('/current', authenticate, cntrlWrapper(getCurrent));
 
