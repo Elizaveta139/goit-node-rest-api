@@ -5,11 +5,17 @@ import { authenticate } from '../middlewares/authenticate.js';
 import { upload } from '../middlewares/upload.js';
 import { cntrlWrapper } from '../helpers/cntrlWrapper.js';
 
-import { registerSchema, loginSchema, subscriptionSchema } from '../schemas/userSchemas.js';
+import {
+  registerSchema,
+  loginSchema,
+  subscriptionSchema,
+  EmailVerifySchema,
+} from '../schemas/userSchemas.js';
 import {
   register,
-  login,
   verifyEmail,
+  resendVerifyEmail,
+  login,
   getCurrent,
   logout,
   updateSubscription,
@@ -20,9 +26,11 @@ const authRouter = express.Router();
 
 authRouter.post('/register', validateBody(registerSchema), cntrlWrapper(register));
 
-authRouter.post('/login', validateBody(loginSchema), cntrlWrapper(login));
-
 authRouter.get('/verify/:verificationToken', cntrlWrapper(verifyEmail));
+
+authRouter.post('/verify', validateBody(EmailVerifySchema), cntrlWrapper(resendVerifyEmail));
+
+authRouter.post('/login', validateBody(loginSchema), cntrlWrapper(login));
 
 authRouter.get('/current', authenticate, cntrlWrapper(getCurrent));
 
