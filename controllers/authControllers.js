@@ -29,13 +29,14 @@ export const register = async (req, res) => {
     avatarURL,
     verificationToken,
   });
+
   const { BASE_URL } = process.env;
+  const url = `${BASE_URL}/users/verify/${verificationToken}`;
   const verifyEmail = {
     to: email,
     subject: 'Verify email',
-    html: `<a target="_blank" href="${BASE_URL}/users/verify/${verificationToken}">Click verify email</a>`,
   };
-  await sendEmail(verifyEmail);
+  await sendEmail(verifyEmail, url);
 
   res.status(201).json({
     user: {
@@ -67,12 +68,12 @@ export const resendVerifyEmail = async (req, res) => {
     throw HttpError(400, 'Verification has already been passed');
   }
   const { BASE_URL } = process.env;
+  const url = `${BASE_URL}/users/verify/${user.verificationToken}`;
   const verifyEmail = {
     to: email,
     subject: 'Verify email',
-    html: `<a target="_blank" href="${BASE_URL}/users/verify/${user.verificationToken}">Click verify email</a>`,
   };
-  await sendEmail(verifyEmail);
+  await sendEmail(verifyEmail, url);
 
   res.status(200).json({
     message: 'Verification email sent',
