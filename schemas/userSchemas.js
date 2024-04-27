@@ -21,3 +21,8 @@ export const subscriptionSchema = Joi.object({
     .valid(...enumValue)
     .required(),
 });
+
+export const passwordSchema = Joi.object({
+  currentPassword: Joi.string(),
+  newPassword: Joi.string().min(6).required(),
+});

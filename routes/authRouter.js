@@ -10,6 +10,7 @@ import {
   loginSchema,
   subscriptionSchema,
   EmailVerifySchema,
+  passwordSchema,
 } from '../schemas/userSchemas.js';
 import {
   register,
@@ -20,6 +21,7 @@ import {
   logout,
   updateSubscription,
   updateAvatar,
+  checkAndUpdatePassword,
 } from '../controllers/authControllers.js';
 
 const authRouter = express.Router();
@@ -44,5 +46,12 @@ authRouter.patch(
 );
 
 authRouter.patch('/avatars', authenticate, upload.single('avatar'), cntrlWrapper(updateAvatar));
+
+authRouter.patch(
+  '/password',
+  authenticate,
+  validateBody(passwordSchema),
+  cntrlWrapper(checkAndUpdatePassword)
+);
 
 export default authRouter;
